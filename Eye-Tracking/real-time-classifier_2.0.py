@@ -10,6 +10,7 @@ import cv2
 from collections import deque
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
+import pickle
 
 #%%
 # Run 2nd: Function to draw the face landmarks on the image.
@@ -46,12 +47,27 @@ def draw_landmarks_on_image(rgb_image, detection_result):
     return annotated_image
 
 #%%
-# Run 3rd: Load the pre-trained model.
-data = pd.read_excel('label_cut_data.xlsx')
+# Optional: Train and save the model.
+data = pd.read_excel('Data/GeneralizedCollection.xlsx')
 X = data.iloc[:, 0:17]  # Features
 y = data.iloc[:, 18]    # Labels
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X, y)
+
+with open('GeneralizedModel.pkl','wb') as file:
+    pickle.dump(model, file)
+
+# Create a FaceLandmarker object.
+base_options = python.BaseOptions(model_asset_path='face_landmarker2.task')
+options = vision.FaceLandmarkerOptions(base_options=base_options,
+                                       output_face_blendshapes=True,
+                                       output_facial_transformation_matrixes=True,
+                                       num_faces=1)
+detector = vision.FaceLandmarker.create_from_options(options)
+#%%
+#Run 3rd: Load the pre-trained model
+with open('GeneralizedModel.pkl','rb') as file:
+    model = pickle.load(file)
 
 # Create a FaceLandmarker object.
 base_options = python.BaseOptions(model_asset_path='face_landmarker2.task')
