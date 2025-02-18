@@ -93,7 +93,7 @@ file_name = "face_blendshape_scores1.txt"
 # Open the file in append mode, using a buffer for writing
 with io.open(file_name, 'a', buffering=1) as file:
     # Load the video
-    cap = cv2.VideoCapture('C:/Users/saber/Documents/GitHub/neuromove/Eye-Tracking/Videos/Philippa/2025-01-22 13-15-33.mp4')  # Replace 'your_video_path.mp4' with the path to your video file
+    cap = cv2.VideoCapture('2025-02-04 18-51-04.mp4')  # Replace 'your_video_path.mp4' with the path to your video file
 
     frame_count = 0  # Initialize the frame count
     landmark_frame_count = 0  # Initialize the landmark frame count
@@ -349,7 +349,7 @@ def add_binary_column(df):
 
 # Path to input and output Excel file
 input_file = 'cut_data2.xlsx'  # Replace with the path of your input Excel file
-output_file = 'Philippa_L.xlsx'  # Replace with the path of your output Excel file
+output_file = 'Haden_F.xlsx'  # Replace with the path of your output Excel file
 
 # Read the Excel file
 df = pd.read_excel(input_file)
