@@ -8,7 +8,7 @@ from collections import deque
  
 #assumptions to begin with -> all neigborhood points do not directly touch walls
 
-def main(driving_mode, destination_mode, gyroscope_data, destination, local_input):
+def main(driving_mode, destination_mode, currentangle, destination, local_input):
     destination = (0,2) #received from aleks every ???s, assuming y and x respectively
                         #Running on the assumption that the next point will be updated every ???s and not once the trainer reaches its first point
 
@@ -21,12 +21,8 @@ def main(driving_mode, destination_mode, gyroscope_data, destination, local_inpu
     # Mrotspeed = 15 #assumed to be in deg/s, can confirm from IMU
     # Mrotaccel = 30 #we will likely have to estimate this
 
-    df_size = 500
-    angular_speed_df = deque(maxlen=df_size)
-    previous_angle = 0
-
     #currently for moving 1m forwards and turning 30 degrees at a time
-    if driving_mode == 2:
+    while driving_mode == 2:
         t_accel = 0.28 #in seconds
         t_const = 1.15 #in seconds
         t_rotaccel = 0.5 #in seconds
@@ -52,21 +48,6 @@ def main(driving_mode, destination_mode, gyroscope_data, destination, local_inpu
 
     while driving_mode == 1:
         
-
-
-
-def quanternion_to_euler(gyroscope_data):
-    rotation_quan = Rot.from_quat(gyroscope_data, scalar_first= True) #scalar-last order – (x, y, z, w) or scalar-first order – (w, x, y, z)
-    rotation_euler = rotation_quan.as_euler('xyz', degrees=True)
-    anglular_speed = -(rotation_euler[3])
-    return(anglular_speed)
-
-
-
-def angularspeed_to_angle(angular_speed_df):
-    Angle = scipy.integrate.simpson(angular_speed_df, x=None, dx = 0.002)
-    return Angle
-
 
 def full_error(destination, currentpos):
     x_error = destination[0]-currentpos[0]
