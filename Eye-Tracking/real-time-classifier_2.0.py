@@ -54,7 +54,7 @@ y = data.iloc[:, 18]    # Labels
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X, y)
 
-with open('GeneralizedModel.pkl','wb') as file:
+with open('GeneralizedModel2.pkl','wb') as file:
     pickle.dump(model, file)
 
 # Create a FaceLandmarker object.
@@ -82,7 +82,7 @@ detector = vision.FaceLandmarker.create_from_options(options)
 cap = cv2.VideoCapture(0)  # 0 for default camera
 
 # Initialize a deque (double-ended queue) to store the features from the last 30 frames.
-window_size = 30
+window_size = 5 #set to predict 1 time every 30s
 feature_window = deque(maxlen=window_size)
 
 while cap.isOpened():
@@ -127,7 +127,13 @@ while cap.isOpened():
             averaged_features = np.mean(feature_window, axis=0).reshape(1, -1)
 
             # Make a prediction
-            prediction = model.predict(averaged_features)
+            # prediction = model.predict(averaged_features)
+
+            #predict threshold then predic using modified threshold
+            y_pred_test = model.predict_proba(averaged_features)
+            custom_threshold = 0.43  # Set your desired threshold
+            prediction = (y_pred_test[:, 1] >= custom_threshold).astype(int)
+
             print("Prediction:", prediction)
 
             # Annotate the frame with landmarks
