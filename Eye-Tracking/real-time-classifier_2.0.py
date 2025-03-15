@@ -51,10 +51,10 @@ def draw_landmarks_on_image(rgb_image, detection_result):
 data = pd.read_excel('Data/GeneralizedCollection.xlsx')
 X = data.iloc[:, 0:17]  # Features
 y = data.iloc[:, 18]    # Labels
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+model = RandomForestClassifier(n_estimators=100, random_state=42, max_depth=23, max_leaf_nodes=575, ccp_alpha=0.005)
 model.fit(X, y)
 
-with open('GeneralizedModel2.pkl','wb') as file:
+with open('GeneralizedModel3.pkl','wb') as file:
     pickle.dump(model, file)
 
 # Create a FaceLandmarker object.
